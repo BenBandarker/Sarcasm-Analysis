@@ -1,0 +1,23 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "LocalApp",
+            "request": "launch",
+            "mainClass": "LocalApp",
+            //"projectName": "LocalApp"
+            "args": ["1.txt", "2.txt", "3.txt", "4.txt", "5.txt","out1.txt", "out2.txt", "out3.txt", "out4.txt", "out5.txt", "10", "terminate"]
+            //"args": ["1.txt", "out1.txt", "10", "terminate"]
+        }
+    ]
+}
