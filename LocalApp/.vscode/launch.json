@@ -6,7 +6,7 @@
     "configurations": [
         {
             "type": "java",
-            "name": "Current File",
+            "name": "Local App- Launch",
             "request": "launch",
             "mainClass": "${file}"
         },
@@ -16,7 +16,7 @@
             "request": "launch",
             "mainClass": "LocalApp",
             //"projectName": "LocalApp"
-            "args": ["1.txt", "2.txt", "3.txt", "4.txt", "5.txt","out1.txt", "out2.txt", "out3.txt", "out4.txt", "out5.txt", "10", "terminate"]
+            "args": "input1.txt input2.txt input3.txt input4.txt input5.txt out1.txt out2.txt out3.txt out4.txt out5.txt 10 terminate"
             //"args": ["1.txt", "out1.txt", "10", "terminate"]
         }
     ]

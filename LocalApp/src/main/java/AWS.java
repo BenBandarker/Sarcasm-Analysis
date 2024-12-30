@@ -26,7 +26,7 @@ public class AWS {
     final SqsClient sqs;
     final Ec2Client ec2;
 
-    public static String ami = "ami-00e95a9222311e8ed";
+    public static String ami = "ami-003d4401fea2d2d0f";
 
     public static String ManagerScript = "#!/bin/bash\n" + 
                                             "yum update -y\n" +
@@ -35,25 +35,24 @@ public class AWS {
                                             "java -cp /home/Manager.jar  Manager\n";
 
     public static Region region1 = Region.US_WEST_2;
-    public static Region region2 = Region.US_EAST_1;
 
     private static final AWS instance = new AWS();
 
 //---------------------Constructor-------------------//
     
 private AWS() {
-        s3 = S3Client.builder().region(region1).build();
-        sqs = SqsClient.builder().region(region1).build();
-        ec2 = Ec2Client.builder().region(region2).build();
-    }
+    s3 = S3Client.builder().region(region1).build();
+    sqs = SqsClient.builder().region(region1).build();
+    ec2 = Ec2Client.builder().region(region1).build();
+}
 
 //----------------------Methods----------------------//
     
 public static AWS getInstance() {
-        return instance;
+    return instance;
 }
 
-    //====================== S3 ======================//
+//====================== S3 ======================//
 
 public void createBucketIfNotExists(String bucketName) {
     try {
@@ -120,14 +119,13 @@ public void createBucketIfNotExists(String bucketName) {
     private String createEC2(String script, String tagName, int numberOfInstances) {
         //Ec2Client ec2 = Ec2Client.builder().region(region2).build();
         RunInstancesRequest runRequest = (RunInstancesRequest) RunInstancesRequest.builder()
-                .instanceType(InstanceType.M4_LARGE)
-                .imageId(ami)
-                .maxCount(numberOfInstances)
-                .minCount(1)
-                .keyName("vockey")
-                .iamInstanceProfile(IamInstanceProfileSpecification.builder().name("visualstudiouser").build())
-                .userData(Base64.getEncoder().encodeToString((script).getBytes()))
-                .build();
+            .instanceType(InstanceType.M5_LARGE)
+            .imageId(ami)
+            .maxCount(numberOfInstances)
+            .minCount(1)
+            .iamInstanceProfile(iamInstanceProfile -> iamInstanceProfile.name("BenEC2Role"))
+            .userData(Base64.getEncoder().encodeToString((script).getBytes()))
+            .build();
 
 
         RunInstancesResponse response = ec2.runInstances(runRequest);

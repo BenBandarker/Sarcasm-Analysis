@@ -98,6 +98,31 @@ public class LocalApp{
 
     //------------------------- helper functions ---------------------------//
 
+    // public static void loadEnv() {
+    //     String envFilePath = ".env";
+    //     try (BufferedReader br = new BufferedReader(new FileReader(envFilePath))) {
+    //         String line;
+    //         while ((line = br.readLine()) != null) {
+    //             // Ignore comments (lines starting with #) and empty lines
+    //             if (line.trim().isEmpty() || line.trim().startsWith("#")) {
+    //                 continue;
+    //             }
+
+    //             // Split the line into key-value pair
+    //             String[] keyValue = line.split("=", 2);
+    //             if (keyValue.length == 2) {
+    //                 String key = keyValue[0].trim();
+    //                 String value = keyValue[1].trim();
+
+    //                 // Set the environment variable in the Java process
+    //                 System.setProperty(key, value);
+    //             }
+    //         }
+    //     } catch (IOException e) {
+    //         System.err.println("Error reading .env file: " + e.getMessage());
+    //     }
+    // }
+
     public static void convertTextToHtml(String inputFilePath) {
         String newPath = inputFilePath.substring(0,inputFilePath.length() - 4) +".html";
         try{

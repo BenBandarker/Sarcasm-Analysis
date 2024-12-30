@@ -1,6 +1,5 @@
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.ec2.Ec2Client;
-import software.amazon.awssdk.services.ec2.model.Tag;
 import software.amazon.awssdk.services.ec2.model.*;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.*;
@@ -29,7 +28,7 @@ public class AWS {
     final SqsClient sqs;
     final Ec2Client ec2;
 
-    public static String ami = "ami-00e95a9222311e8ed";
+    public static String ami = "ami-003d4401fea2d2d0f";
     public static String workerScript = "#!/bin/bash\n" + 
                                         "yum update -y\n" + 
                                         "yum install -y aws-cli\n" + 
@@ -37,7 +36,6 @@ public class AWS {
                                         "java -Xms4g -Xmx4g -jar /home/Worker.jar"; 
 
     public static Region region1 = Region.US_WEST_2;
-    public static Region region2 = Region.US_EAST_1;
 
     private static final AWS instance = new AWS();
 
@@ -84,7 +82,7 @@ public class AWS {
     //====================== EC2 ======================//
 
     public void terminateManager() { // For the Manager
-        Ec2Client ec2 = Ec2Client.builder().region(region2).build();
+        Ec2Client ec2 = Ec2Client.builder().region(region1).build();
         DescribeInstancesRequest request = DescribeInstancesRequest.builder()
                                                                     .filters(Filter.builder()
                                                                                     .name("tag:" + "Name")
@@ -123,7 +121,7 @@ public class AWS {
     }
 
     public void terminateInstance(String instanceId){
-        Ec2Client ec2 = Ec2Client.builder().region(region2).build();
+        Ec2Client ec2 = Ec2Client.builder().region(region1).build();
         try{
             TerminateInstancesRequest request = TerminateInstancesRequest.builder()
                 .instanceIds(instanceId)
@@ -137,14 +135,13 @@ public class AWS {
     }
 
     private String createEC2(String script, String tagName, int numberOfInstances) {
-        Ec2Client ec2 = Ec2Client.builder().region(region2).build();
+        Ec2Client ec2 = Ec2Client.builder().region(region1).build();
         RunInstancesRequest runRequest = (RunInstancesRequest) RunInstancesRequest.builder()
                 .instanceType(InstanceType.M4_LARGE)
                 .imageId(ami)
                 .maxCount(numberOfInstances)
                 .minCount(1)
-                .keyName("vockey")
-                .iamInstanceProfile(IamInstanceProfileSpecification.builder().name("LabInstanceProfile").build())
+                .iamInstanceProfile(iamInstanceProfile -> iamInstanceProfile.name("BenEC2Role"))
                 .userData(Base64.getEncoder().encodeToString((script).getBytes()))
                 .build();
 
@@ -153,7 +150,7 @@ public class AWS {
 
         String instanceId = response.instances().get(0).instanceId();
 
-        software.amazon.awssdk.services.ec2.model.Tag tag = Tag.builder()
+        software.amazon.awssdk.services.ec2.model.Tag tag = software.amazon.awssdk.services.ec2.model.Tag.builder()
                 .key("Name")
                 .value(tagName)
                 .build();
